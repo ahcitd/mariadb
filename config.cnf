@@ -29,7 +29,7 @@ character-set-server = utf8mb4
 
 # กำหนด collation (กฎการเปรียบเทียบและเรียงลำดับ) เป็น utf8mb4_unicode_ci
 # unicode_ci = case-insensitive, เหมาะสำหรับการใช้งานทั่วไป
-collation-server = utf8mb4_unicode_ci
+collation-server = utf8mb4_general_ci
 
 # บังคับให้ทุก connection ที่เชื่อมต่อเข้ามาใช้ utf8mb4 ทันที
 init-connect = 'SET NAMES utf8mb4'
