@@ -10,6 +10,7 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
       - ./mariadb-config:/etc/mysql/conf.d
+      - ./mariadb-log:/var/log/mysql
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 30s
