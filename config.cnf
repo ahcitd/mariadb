@@ -32,7 +32,7 @@ character-set-server = utf8mb4
 collation-server = utf8mb4_general_ci
 
 # บังคับให้ทุก connection ที่เชื่อมต่อเข้ามาใช้ utf8mb4 ทันที
-init-connect = 'SET NAMES utf8mb4'
+init-connect = 'SET NAMES utf8mb4 COLLATE utf8mb4_general_ci'
 
 # ไม่ให้ client เปลี่ยน character set ที่ส่งมา (บังคับให้ใช้ตามที่ server กำหนด)
 skip-character-set-client-handshake
