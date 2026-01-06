@@ -1,0 +1,39 @@
+services:
+  # Service: Database (MariaDB)
+  mariadb:
+    image: mariadb:${MARIADB_TAG}
+    container_name: ${PROJECT_NAME}_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MARIADB_DATABASE}
+      MYSQL_USER: ${MARIADB_USER}
+      MYSQL_PASSWORD: ${MARIADB_PASSWORD}
+      TZ: Asia/Bangkok
+    ports:
+      - "${MARIADB_HOST_PORT}:3306"
+    volumes:
+      - ./mariadb_data:/var/lib/mysql  # เก็บข้อมูลถาวรไว้ที่โฟลเดอร์ mariadb_data
+    networks:
+      - app_network
+
+  # Service: GUI (phpMyAdmin)
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin:${PMA_TAG}
+    container_name: ${PROJECT_NAME}_pma
+    restart: unless-stopped
+    depends_on:
+      - mariadb
+    environment:
+      PMA_HOST: mariadb             # ต้องตรงกับชื่อ Service ด้านบน
+      PMA_USER: root
+      PMA_PASSWORD: ${MARIADB_ROOT_PASSWORD} # ใส่เพื่อให้ Login อัตโนมัติ (ถ้าไม่ใส่จะต้องกรอกเองหน้าเว็บ)
+      UPLOAD_LIMIT: ${PMA_UPLOAD_LIMIT}
+    ports:
+      - "${PMA_HOST_PORT}:80"
+    networks:
+      - app_network
+
+networks:
+  app_network:
+    driver: bridge
