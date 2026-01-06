@@ -1,7 +1,6 @@
 services:
   mariadb:
     image: mariadb:${MARIADB_VERSION}
-    container_name: ${MARIADB_CONTAINER_NAME}
     restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -11,8 +10,6 @@ services:
     volumes:
       - mariadb_data:/var/lib/mysql
       - ./mariadb-config:/etc/mysql/conf.d
-    networks:
-      - db_network
     healthcheck:
       test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
       interval: 30s
@@ -22,7 +19,6 @@ services:
 
   phpmyadmin:
     image: phpmyadmin:${PHPMYADMIN_VERSION}
-    container_name: ${PHPMYADMIN_CONTAINER_NAME}
     restart: unless-stopped
     environment:
       PMA_HOST: mariadb
@@ -35,13 +31,7 @@ services:
     depends_on:
       mariadb:
         condition: service_healthy
-    networks:
-      - db_network
 
 volumes:
   mariadb_data:
     driver: local
-
-networks:
-  db_network:
-    driver: bridge
